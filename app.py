@@ -210,4 +210,28 @@ st.subheader("🗣️ Top 10 Tracks by Speechiness")
 top_speechiness_tracks = df_filtered.nlargest(10, 'speechiness')[['song_title', 'artist', 'speechiness']]
 st.write(top_speechiness_tracks)
 
-st.info("✨ This dashboard covers all major Spotify EDA insights. Use the sidebar to filter by artist and compare multiple feature distributions interactively!")
+st.markdown("""
+<div class="custom-info-box">
+✨ This dashboard covers all major Spotify EDA insights. Use the sidebar to filter by artist and compare multiple feature distributions interactively!
+</div>
+<style>
+.custom-info-box {
+    border-radius: 6px;
+    padding: 1em;
+    margin-top: 1.5em;
+    font-size: 1.1rem;
+    font-weight: 500;
+    background: #e7f3fe;
+    color: #22223b;
+    border-left: 0.3em solid #2196f3;
+}
+@media (prefers-color-scheme: dark) {
+    .custom-info-box {
+        background: #22223b !important;
+        color: #e7f3fe !important;
+        border-left: 0.3em solid #90caf9;
+    }
+}
+</style>
+""", unsafe_allow_html=True)
+
