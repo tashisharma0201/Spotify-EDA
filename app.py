@@ -33,26 +33,35 @@ df_filtered = df if selected_artist == 'All' else df[df['artist'] == selected_ar
 st.header("🗂️ Dataset Preview")
 st.dataframe(df_filtered.head(20))
 
-# --- Pie Chart: Top 10 Instrumental Tracks ---
+# --- Pie Chart: Top 10 Instrumental Tracks (safe, robust) ---
 st.subheader("🥁 Top 10 Instrumental Tracks (Pie Chart)")
 top_instrumental = df_filtered.nlargest(10, 'instrumentalness')[['song_title', 'instrumentalness']]
+
+# Remove zero, negative, or NaN values
+top_instrumental = top_instrumental[top_instrumental['instrumentalness'] > 0].dropna(subset=['instrumentalness'])
+
 labels = top_instrumental['song_title']
 sizes = top_instrumental['instrumentalness']
 colors = sns.color_palette('cool', len(labels))
-fig1, ax1 = plt.subplots(figsize=(5, 5))
-wedges, texts, autotexts = ax1.pie(
-    sizes, labels=None, autopct='%1.1f%%', startangle=90,
-    pctdistance=1.15, colors=colors, textprops={'fontsize': 12}
-)
-centre_circle = plt.Circle((0, 0), 0.65, fc='white')
-fig1.gca().add_artist(centre_circle)
-ax1.set_title('Top 10 Instrumental Tracks', fontsize=14)
-ax1.legend(wedges, labels, title="Song Title", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=10)
-for autotext in autotexts:
-    autotext.set_color('black')
-    autotext.set_fontsize(10)
-plt.tight_layout()
-st.pyplot(fig1)
+
+if len(sizes) > 0 and sizes.sum() > 0:
+    fig1, ax1 = plt.subplots(figsize=(5, 5))
+    wedges, texts, autotexts = ax1.pie(
+        sizes, labels=None, autopct='%1.1f%%', startangle=90,
+        pctdistance=1.15, colors=colors, textprops={'fontsize': 12}
+    )
+    centre_circle = plt.Circle((0, 0), 0.65, fc='white')
+    fig1.gca().add_artist(centre_circle)
+    ax1.set_title('Top 10 Instrumental Tracks', fontsize=14)
+    ax1.legend(wedges, labels, title="Song Title", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=10)
+    for autotext in autotexts:
+        autotext.set_color('black')
+        autotext.set_fontsize(10)
+    plt.tight_layout()
+    st.pyplot(fig1)
+else:
+    st.warning("No valid instrumental tracks with positive values to display in the pie chart.")
+
 
 # --- Bar Chart: Top 10 Artists by Track Count ---
 st.subheader("🌟 Top 10 Artists by Track Count")
