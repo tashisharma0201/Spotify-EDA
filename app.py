@@ -3,14 +3,24 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-st.set_page_config(page_title="Spotify EDA Dashboard", layout="wide")
+st.set_page_config(page_title="Spotify EDA Dashboard", layout="centered")
 
-# --- Custom CSS for background and headers ---
+# --- Responsive CSS for headings and background ---
 st.markdown("""
     <style>
     .stApp {background-color: #f5f7fa;}
-    h1, h2, h3, h4 {color: #22223b; font-weight: bold;}
-    .css-1d391kg {color: #22223b;}
+    h1, h2, h3, h4 {
+      color: #22223b;
+      font-weight: bold;
+      font-size: 2.2rem;
+    }
+    @media (max-width: 600px) {
+      h1, h2, h3, h4 {
+        font-size: 1.3rem !important;
+        margin-top: 0.7em;
+        margin-bottom: 0.3em;
+      }
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -45,7 +55,7 @@ st.dataframe(df_filtered.head())
 # Top 5 Popular Artists
 st.subheader("🏆 Top 5 Popular Artists")
 top_five_artists = df_filtered['artist'].value_counts().head(5)
-st.bar_chart(top_five_artists)
+st.bar_chart(top_five_artists, use_container_width=True)
 
 # Top 5 Loudest Tracks
 st.subheader("🔊 Top 5 Loudest Tracks")
@@ -70,16 +80,16 @@ st.write(top_instrumental_tracks)
 # --- Multi-feature overlayed histograms ---
 if selected_features:
     st.subheader("📊 Compare Multiple Feature Distributions")
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(6, 4))
     for feature in selected_features:
         sns.histplot(df_filtered[feature], bins=30, kde=True, ax=ax, label=feature, alpha=0.5)
     ax.set_title("Overlayed Distributions")
     ax.legend()
-    st.pyplot(fig)
+    st.pyplot(fig, use_container_width=True)
 
 # Feature Distributions (as in notebook)
 st.subheader("📊 Feature Distributions (Energy, Valence, Tempo, Loudness)")
-fig2, axs = plt.subplots(2, 2, figsize=(12, 10))
+fig2, axs = plt.subplots(2, 2, figsize=(8, 6))
 sns.histplot(df_filtered['energy'], bins=30, ax=axs[0, 0], color='blue')
 axs[0, 0].set_title('Energy')
 sns.histplot(df_filtered['valence'], bins=30, ax=axs[0, 1], color='red')
@@ -88,7 +98,8 @@ sns.histplot(df_filtered['tempo'], bins=30, ax=axs[1, 0], color='green')
 axs[1, 0].set_title('Tempo')
 sns.histplot(df_filtered['loudness'], bins=30, ax=axs[1, 1], color='purple')
 axs[1, 1].set_title('Loudness')
-st.pyplot(fig2)
+plt.tight_layout()
+st.pyplot(fig2, use_container_width=True)
 
 # Top 10 Energetic Tracks
 st.subheader("⚡ Top 10 Energetic Tracks")
@@ -123,19 +134,20 @@ else:
 st.subheader("🧮 Correlation Heatmap (Numeric Features)")
 numeric_cols = df_filtered.select_dtypes(include=['float64', 'int64']).columns
 corr = df_filtered[numeric_cols].corr()
-fig3, ax3 = plt.subplots(figsize=(10, 8))
+fig3, ax3 = plt.subplots(figsize=(7, 5))
 sns.heatmap(corr, annot=True, fmt=".2f", cmap="crest", ax=ax3)
-st.pyplot(fig3)
+plt.tight_layout()
+st.pyplot(fig3, use_container_width=True)
 
 # Energy vs. Danceability
 st.subheader("⚡ Energy vs. Danceability")
-fig4, ax4 = plt.subplots()
+fig4, ax4 = plt.subplots(figsize=(6, 4))
 sns.scatterplot(data=df_filtered, x='energy', y='danceability', alpha=0.3, ax=ax4)
-st.pyplot(fig4)
+st.pyplot(fig4, use_container_width=True)
 
 # Additional Feature Distributions
 st.subheader("📊 Additional Feature Distributions")
-fig5, axs5 = plt.subplots(2, 2, figsize=(12, 10))
+fig5, axs5 = plt.subplots(2, 2, figsize=(8, 6))
 sns.histplot(df_filtered['acousticness'], bins=30, ax=axs5[0, 0], color='cyan')
 axs5[0, 0].set_title('Acousticness')
 sns.histplot(df_filtered['instrumentalness'], bins=30, ax=axs5[0, 1], color='magenta')
@@ -144,7 +156,8 @@ sns.histplot(df_filtered['liveness'], bins=30, ax=axs5[1, 0], color='yellow')
 axs5[1, 0].set_title('Liveness')
 sns.histplot(df_filtered['speechiness'], bins=30, ax=axs5[1, 1], color='orange')
 axs5[1, 1].set_title('Speechiness')
-st.pyplot(fig5)
+plt.tight_layout()
+st.pyplot(fig5, use_container_width=True)
 
 # Top 10 Tracks by Liveness
 st.subheader("🎤 Top 10 Tracks by Liveness")
