@@ -34,7 +34,6 @@ def load_data():
     df = df.drop_duplicates(subset=['song_title', 'artist'], keep='first')
     return df
 
-
 df = load_data()
 
 # --- Sidebar filter for artist selection and multi-feature selection ---
