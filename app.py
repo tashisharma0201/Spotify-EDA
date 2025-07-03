@@ -40,17 +40,27 @@ artist_options = ['All'] + sorted(df['artist'].unique())
 selected_artist = st.sidebar.selectbox("🎤 Select Artist", artist_options)
 df_filtered = df if selected_artist == 'All' else df[df['artist'] == selected_artist]
 
-# Multi-feature selection for overlayed distributions
-feature_cols = ['acousticness', 'danceability', 'duration_ms', 'energy', 'instrumentalness',
-                'liveness', 'loudness', 'speechiness', 'tempo', 'valence']
-selected_features = st.sidebar.multiselect(
-    "📊 Select features to compare distributions",
-    feature_cols,
-    default=['energy', 'danceability']
-)
+# --- Multi-feature separate histograms ---
+if selected_features:
+    st.subheader("📊 Compare Feature Distributions (Side by Side)")
+    num_feats = len(selected_features)
+    ncols = 2 if num_feats > 1 else 1
+    nrows = (num_feats + ncols - 1) // ncols
 
-st.header("🗂️ Dataset Preview")
-st.dataframe(df_filtered.head())
+    fig, axs = plt.subplots(nrows, ncols, figsize=(8, 4 * nrows))
+    axs = axs.flatten() if num_feats > 1 else [axs]
+
+    for i, feature in enumerate(selected_features):
+        sns.histplot(df_filtered[feature], bins=30, kde=True, ax=axs[i], color='skyblue')
+        axs[i].set_title(feature.capitalize())
+    # Hide any unused subplots
+    for j in range(i + 1, len(axs)):
+        axs[j].set_visible(False)
+
+    plt.tight_layout()
+    st.pyplot(fig, use_container_width=True)
+else:
+    st.info("Select at least one feature to compare distributions.")
 
 # Top 5 Popular Artists
 st.subheader("🏆 Top 5 Popular Artists")
