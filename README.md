@@ -1,5 +1,11 @@
 # Spotify-EDA
 This project performs Exploratory Data Analysis (EDA) on Spotify dataset(s) to gain insights into music trends, genres, and other characteristics. The analysis includes various visualizations and statistical summaries to understand the distribution and relationships between different musical attributes.
+An interactive dashboard for Spotify dataset exploratory data analysis, built with Streamlit.
+
+
+# Run Locally
+
+
 
 # Features
 Data Cleaning: Initial data cleaning and preprocessing steps.
