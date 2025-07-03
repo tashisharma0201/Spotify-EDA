@@ -6,27 +6,30 @@ import seaborn as sns
 st.set_page_config(page_title="Spotify EDA", layout="wide")
 st.title("Spotify Exploratory Data Analysis Dashboard")
 
-# Load data
 @st.cache_data
 def load_data():
-    return pd.read_csv("data.csv")
+    df = pd.read_csv("data.csv")
+    df.columns = df.columns.str.strip()
+    return df
 
 df = load_data()
 
 st.header("Dataset Preview")
 st.dataframe(df.head())
 
-# Distribution of Popularity
-st.subheader("Distribution of Popularity")
+st.write("Columns in the dataset:", df.columns.tolist())
+
+# Distribution of Danceability
+st.subheader("Distribution of Danceability")
 fig1, ax1 = plt.subplots()
-sns.histplot(df['popularity'], bins=30, ax=ax1, color='green')
-ax1.set_xlabel('Popularity')
+sns.histplot(df['danceability'], bins=30, ax=ax1, color='green')
+ax1.set_xlabel('Danceability')
 ax1.set_ylabel('Count')
 st.pyplot(fig1)
 
 # Top 10 Artists by Track Count
 st.subheader("Top 10 Artists by Track Count")
-top_artists = df['artist_name'].value_counts().head(10)
+top_artists = df['artist'].value_counts().head(10)
 st.bar_chart(top_artists)
 
 # Distribution of Duration
