@@ -134,8 +134,22 @@ else:
 st.subheader("🧮 Correlation Heatmap (Numeric Features)")
 numeric_cols = df_filtered.select_dtypes(include=['float64', 'int64']).columns
 corr = df_filtered[numeric_cols].corr()
-fig3, ax3 = plt.subplots(figsize=(7, 5))
-sns.heatmap(corr, annot=True, fmt=".2f", cmap="crest", ax=ax3)
+
+# Make the heatmap larger and clearer
+fig3, ax3 = plt.subplots(figsize=(12, 8))  # Increased size for clarity
+sns.heatmap(
+    corr,
+    annot=True,
+    fmt=".2f",
+    cmap="crest",
+    ax=ax3,
+    annot_kws={"size": 10},        # Larger annotation font
+    cbar=True,
+    square=False,
+    linewidths=0.5
+)
+ax3.set_xticklabels(ax3.get_xticklabels(), rotation=45, ha='right', fontsize=10)
+ax3.set_yticklabels(ax3.get_yticklabels(), rotation=0, fontsize=10)
 plt.tight_layout()
 st.pyplot(fig3, use_container_width=True)
 
