@@ -8,22 +8,16 @@ st.set_page_config(page_title="Spotify EDA Dashboard", layout="centered")
 # --- Responsive CSS for headings and background ---
 st.markdown("""
     <style>
-    .stApp {background-color: #f5f7fa;}
     h1, h2, h3, h4 {
       font-weight: bold;
       font-size: 2.2rem;
     }
-    @media (prefers-color-scheme: dark) {
+    @media (max-width: 600px) {
       h1, h2, h3, h4 {
-        color: #e0e0e0 !important;  /* Light text for dark mode */
+        font-size: 1.3rem !important;
+        margin-top: 0.7em;
+        margin-bottom: 0.3em;
       }
-      .stApp {background-color: #17191a;}
-    }
-    @media (prefers-color-scheme: light) {
-      h1, h2, h3, h4 {
-        color: #22223b !important;  /* Dark text for light mode */
-      }
-      .stApp {background-color: #f5f7fa;}
     }
     </style>
 """, unsafe_allow_html=True)
