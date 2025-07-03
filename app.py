@@ -5,7 +5,7 @@ import seaborn as sns
 
 st.set_page_config(page_title="Spotify EDA Dashboard", layout="wide")
 
-# --- Custom CSS for a pleasant background and improved UI ---
+# --- Custom CSS for user-friendly UI ---
 st.markdown(
     """
     <style>
@@ -38,53 +38,50 @@ if selected_artist != 'All':
 st.header("🗂️ Dataset Preview")
 st.dataframe(df.head(20))
 
-# --- Pie Chart: Mode Distribution (Donut style, labels outside) ---
+# --- Pie Chart: Mode Distribution (Smaller, non-overlapping) ---
 st.subheader("📊 Mode Distribution (Major/Minor)")
 mode_counts = df['mode'].value_counts()
 labels = ['Major' if x == 1 else 'Minor' for x in mode_counts.index]
-fig1, ax1 = plt.subplots()
+fig1, ax1 = plt.subplots(figsize=(5, 5))
 wedges, texts, autotexts = ax1.pie(
-    mode_counts, labels=labels, autopct='%1.1f%%', startangle=90,
-    pctdistance=0.85, labeldistance=1.1, colors=['#36a2eb', '#ff6384'], textprops={'fontsize': 12}
+    mode_counts, labels=None, autopct='%1.1f%%', startangle=90,
+    pctdistance=0.7, colors=['#36a2eb', '#ff6384'], textprops={'fontsize': 12}
 )
-centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+centre_circle = plt.Circle((0, 0), 0.65, fc='white')
 fig1.gca().add_artist(centre_circle)
-ax1.set_title('Mode Distribution')
-for autotext in autotexts:
-    autotext.set_color('black')
-    autotext.set_fontsize(10)
+ax1.set_title('Mode Distribution', fontsize=14)
+ax1.legend(wedges, labels, title="Mode", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=12)
+plt.tight_layout()
 st.pyplot(fig1)
 
-# --- Pie Chart: Time Signature Distribution (Donut style) ---
+# --- Pie Chart: Time Signature Distribution (Smaller, non-overlapping) ---
 st.subheader("⏱️ Time Signature Distribution")
 ts_counts = df['time_signature'].value_counts()
-fig2, ax2 = plt.subplots()
+fig2, ax2 = plt.subplots(figsize=(5, 5))
 wedges, texts, autotexts = ax2.pie(
-    ts_counts, labels=ts_counts.index, autopct='%1.1f%%', startangle=90,
-    pctdistance=0.85, labeldistance=1.1, colors=sns.color_palette('pastel'), textprops={'fontsize': 12}
+    ts_counts, labels=None, autopct='%1.1f%%', startangle=90,
+    pctdistance=0.7, colors=sns.color_palette('pastel'), textprops={'fontsize': 12}
 )
-centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+centre_circle = plt.Circle((0, 0), 0.65, fc='white')
 fig2.gca().add_artist(centre_circle)
-ax2.set_title('Time Signature Distribution')
-for autotext in autotexts:
-    autotext.set_color('black')
-    autotext.set_fontsize(10)
+ax2.set_title('Time Signature Distribution', fontsize=14)
+ax2.legend(wedges, ts_counts.index, title="Time Signature", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=12)
+plt.tight_layout()
 st.pyplot(fig2)
 
-# --- Pie Chart: Key Distribution (Donut style) ---
+# --- Pie Chart: Key Distribution (Smaller, non-overlapping) ---
 st.subheader("🎼 Key Distribution")
 key_counts = df['key'].value_counts()
-fig3, ax3 = plt.subplots()
+fig3, ax3 = plt.subplots(figsize=(5, 5))
 wedges, texts, autotexts = ax3.pie(
-    key_counts, labels=key_counts.index, autopct='%1.1f%%', startangle=90,
-    pctdistance=0.85, labeldistance=1.1, colors=sns.color_palette('Set3'), textprops={'fontsize': 12}
+    key_counts, labels=None, autopct='%1.1f%%', startangle=90,
+    pctdistance=0.7, colors=sns.color_palette('Set3'), textprops={'fontsize': 12}
 )
-centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+centre_circle = plt.Circle((0, 0), 0.65, fc='white')
 fig3.gca().add_artist(centre_circle)
-ax3.set_title('Key Distribution')
-for autotext in autotexts:
-    autotext.set_color('black')
-    autotext.set_fontsize(10)
+ax3.set_title('Key Distribution', fontsize=14)
+ax3.legend(wedges, key_counts.index, title="Key", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=12)
+plt.tight_layout()
 st.pyplot(fig3)
 
 # --- Bar Chart: Top 10 Artists ---
@@ -189,5 +186,4 @@ st.subheader("🗣️ Top 10 Tracks by Speechiness")
 top_speechiness_tracks = df.nlargest(10, 'speechiness')[['song_title', 'artist', 'speechiness']]
 st.write(top_speechiness_tracks)
 
-st.info("✨ You can filter by artist from the sidebar. All pie charts are now donut-style with improved label placement. Enjoy exploring your Spotify data!")
-
+st.info("✨ Pie charts are now compact, non-overlapping, and use legends for clarity. All other metrics and graphs remain user-friendly and interactive. Enjoy exploring your Spotify data!")
