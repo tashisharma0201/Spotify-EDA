@@ -30,7 +30,10 @@ st.title("🎵 Spotify Exploratory Data Analysis Dashboard")
 def load_data():
     df = pd.read_csv("data.csv")
     df.columns = df.columns.str.strip()
+    # Remove duplicates based on song_title and artist
+    df = df.drop_duplicates(subset=['song_title', 'artist'], keep='first')
     return df
+
 
 df = load_data()
 
