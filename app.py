@@ -10,19 +10,24 @@ st.markdown("""
     <style>
     .stApp {background-color: #f5f7fa;}
     h1, h2, h3, h4 {
-      color: #22223b;
       font-weight: bold;
       font-size: 2.2rem;
     }
-    @media (max-width: 600px) {
+    @media (prefers-color-scheme: dark) {
       h1, h2, h3, h4 {
-        font-size: 1.3rem !important;
-        margin-top: 0.7em;
-        margin-bottom: 0.3em;
+        color: #e0e0e0 !important;  /* Light text for dark mode */
       }
+      .stApp {background-color: #17191a;}
+    }
+    @media (prefers-color-scheme: light) {
+      h1, h2, h3, h4 {
+        color: #22223b !important;  /* Dark text for light mode */
+      }
+      .stApp {background-color: #f5f7fa;}
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 st.title("🎵 Spotify Exploratory Data Analysis Dashboard")
 
