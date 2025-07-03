@@ -41,14 +41,20 @@ selected_artist = st.sidebar.selectbox("🎤 Select Artist", artist_options)
 df_filtered = df if selected_artist == 'All' else df[df['artist'] == selected_artist]
 
 # --- Multi-feature separate histograms ---
+st.subheader("📊 Compare Feature Distributions (Side by Side)")
+if 'selected_features' not in locals():
+    selected_features = []
+
 if selected_features:
-    st.subheader("📊 Compare Feature Distributions (Side by Side)")
     num_feats = len(selected_features)
     ncols = 2 if num_feats > 1 else 1
     nrows = (num_feats + ncols - 1) // ncols
 
     fig, axs = plt.subplots(nrows, ncols, figsize=(8, 4 * nrows))
-    axs = axs.flatten() if num_feats > 1 else [axs]
+    if num_feats == 1:
+        axs = [axs]
+    else:
+        axs = axs.flatten()
 
     for i, feature in enumerate(selected_features):
         sns.histplot(df_filtered[feature], bins=30, kde=True, ax=axs[i], color='skyblue')
@@ -61,6 +67,9 @@ if selected_features:
     st.pyplot(fig, use_container_width=True)
 else:
     st.info("Select at least one feature to compare distributions.")
+
+
+   
 
 # Top 5 Popular Artists
 st.subheader("🏆 Top 5 Popular Artists")
