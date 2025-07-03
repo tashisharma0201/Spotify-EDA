@@ -24,14 +24,11 @@ def load_data():
 
 df = load_data()
 
-# --- Sidebar filters for artist and feature selection ---
+# --- Sidebar filter for artist selection ---
 st.sidebar.title("🔎 Filter Options")
 artist_options = ['All'] + sorted(df['artist'].unique())
 selected_artist = st.sidebar.selectbox("🎤 Select Artist", artist_options)
 df_filtered = df if selected_artist == 'All' else df[df['artist'] == selected_artist]
-
-feature_options = ['energy', 'valence', 'tempo', 'loudness', 'acousticness', 'danceability', 'instrumentalness', 'liveness', 'speechiness']
-selected_feature = st.sidebar.selectbox("📈 Select Feature for Distribution", feature_options)
 
 st.header("🗂️ Dataset Preview")
 st.dataframe(df_filtered.head())
@@ -61,26 +58,19 @@ st.subheader("🥁 Top 10 Instrumental Tracks")
 top_instrumental_tracks = df_filtered.nlargest(10, 'instrumentalness')[['song_title', 'artist', 'instrumentalness']]
 st.write(top_instrumental_tracks)
 
-# --- Feature Distributions (dropdown selection) ---
-st.subheader(f"📊 Distribution of {selected_feature.capitalize()}")
-fig, ax = plt.subplots(figsize=(7, 4))
-sns.histplot(df_filtered[selected_feature], bins=30, kde=True, color='#36a2eb', ax=ax)
-ax.set_title(f'{selected_feature.capitalize()} Distribution')
-st.pyplot(fig)
-
 # --- Feature Distributions (energy, valence, tempo, loudness) ---
 st.subheader("📊 Feature Distributions (Energy, Valence, Tempo, Loudness)")
-fig2, axs2 = plt.subplots(2, 2, figsize=(12, 8))
-sns.histplot(df_filtered['energy'], bins=30, ax=axs2[0, 0], color='blue')
-axs2[0, 0].set_title('Energy')
-sns.histplot(df_filtered['valence'], bins=30, ax=axs2[0, 1], color='red')
-axs2[0, 1].set_title('Valence')
-sns.histplot(df_filtered['tempo'], bins=30, ax=axs2[1, 0], color='green')
-axs2[1, 0].set_title('Tempo')
-sns.histplot(df_filtered['loudness'], bins=30, ax=axs2[1, 1], color='purple')
-axs2[1, 1].set_title('Loudness')
+fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+sns.histplot(df_filtered['energy'], bins=30, ax=axs[0, 0], color='blue')
+axs[0, 0].set_title('Energy')
+sns.histplot(df_filtered['valence'], bins=30, ax=axs[0, 1], color='red')
+axs[0, 1].set_title('Valence')
+sns.histplot(df_filtered['tempo'], bins=30, ax=axs[1, 0], color='green')
+axs[1, 0].set_title('Tempo')
+sns.histplot(df_filtered['loudness'], bins=30, ax=axs[1, 1], color='purple')
+axs[1, 1].set_title('Loudness')
 plt.tight_layout()
-st.pyplot(fig2)
+st.pyplot(fig)
 
 # --- Top 10 Energetic Tracks ---
 st.subheader("⚡ Top 10 Energetic Tracks")
@@ -115,34 +105,34 @@ else:
 st.subheader("🧮 Correlation Heatmap (Numeric Features)")
 numeric_cols = df_filtered.select_dtypes(include=['float64', 'int64']).columns
 corr = df_filtered[numeric_cols].corr()
-fig3, ax3 = plt.subplots(figsize=(8, 6))
-sns.heatmap(corr, annot=True, fmt=".2f", cmap="crest", ax=ax3)
+fig2, ax2 = plt.subplots(figsize=(8, 6))
+sns.heatmap(corr, annot=True, fmt=".2f", cmap="crest", ax=ax2)
 plt.tight_layout()
-st.pyplot(fig3)
+st.pyplot(fig2)
 
 # --- Energy vs. Danceability ---
 st.subheader("⚡ Energy vs. Danceability")
-fig4, ax4 = plt.subplots(figsize=(6, 4))
-sns.scatterplot(data=df_filtered, x='energy', y='danceability', alpha=0.4, ax=ax4)
-ax4.set_title('Energy vs. Danceability')
-ax4.set_xlabel('Energy')
-ax4.set_ylabel('Danceability')
+fig3, ax3 = plt.subplots(figsize=(7, 5))
+sns.scatterplot(data=df_filtered, x='energy', y='danceability', alpha=0.4, ax=ax3)
+ax3.set_title('Energy vs. Danceability')
+ax3.set_xlabel('Energy')
+ax3.set_ylabel('Danceability')
 plt.tight_layout()
-st.pyplot(fig4)
+st.pyplot(fig3)
 
 # --- Additional Feature Distributions ---
 st.subheader("📊 Additional Feature Distributions")
-fig5, axs5 = plt.subplots(2, 2, figsize=(12, 8))
-sns.histplot(df_filtered['acousticness'], bins=30, ax=axs5[0, 0], color='cyan')
-axs5[0, 0].set_title('Acousticness')
-sns.histplot(df_filtered['instrumentalness'], bins=30, ax=axs5[0, 1], color='magenta')
-axs5[0, 1].set_title('Instrumentalness')
-sns.histplot(df_filtered['liveness'], bins=30, ax=axs5[1, 0], color='yellow')
-axs5[1, 0].set_title('Liveness')
-sns.histplot(df_filtered['speechiness'], bins=30, ax=axs5[1, 1], color='orange')
-axs5[1, 1].set_title('Speechiness')
+fig4, axs4 = plt.subplots(2, 2, figsize=(12, 8))
+sns.histplot(df_filtered['acousticness'], bins=30, ax=axs4[0, 0], color='cyan')
+axs4[0, 0].set_title('Acousticness')
+sns.histplot(df_filtered['instrumentalness'], bins=30, ax=axs4[0, 1], color='magenta')
+axs4[0, 1].set_title('Instrumentalness')
+sns.histplot(df_filtered['liveness'], bins=30, ax=axs4[1, 0], color='yellow')
+axs4[1, 0].set_title('Liveness')
+sns.histplot(df_filtered['speechiness'], bins=30, ax=axs4[1, 1], color='orange')
+axs4[1, 1].set_title('Speechiness')
 plt.tight_layout()
-st.pyplot(fig5)
+st.pyplot(fig4)
 
 # --- Top 10 Tracks by Liveness ---
 st.subheader("🎤 Top 10 Tracks by Liveness")
@@ -159,4 +149,4 @@ st.subheader("🗣️ Top 10 Tracks by Speechiness")
 top_speechiness_tracks = df_filtered.nlargest(10, 'speechiness')[['song_title', 'artist', 'speechiness']]
 st.write(top_speechiness_tracks)
 
-st.info("✨ This interactive dashboard covers all major Spotify EDA insights. Use the sidebar to filter by artist and feature, and explore your data visually and intuitively!")
+st.info("✨ This interactive dashboard covers all major Spotify EDA insights. Use the sidebar to filter by artist and explore your data visually and intuitively!")
