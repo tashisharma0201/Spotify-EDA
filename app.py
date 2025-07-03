@@ -33,52 +33,69 @@ df_filtered = df if selected_artist == 'All' else df[df['artist'] == selected_ar
 st.header("🗂️ Dataset Preview")
 st.dataframe(df_filtered.head(20))
 
-# --- Pie Chart: Mode Distribution (Donut, non-overlapping, legend) ---
+# --- Pie Chart: Mode Distribution (Donut, metrics outside, legend) ---
 st.subheader("📊 Mode Distribution (Major/Minor)")
 mode_counts = df_filtered['mode'].value_counts()
 labels = ['Major' if x == 1 else 'Minor' for x in mode_counts.index]
+sizes = mode_counts.values
+colors = ['#36a2eb', '#ff6384']
+
 fig1, ax1 = plt.subplots(figsize=(5, 5))
 wedges, texts, autotexts = ax1.pie(
-    mode_counts, labels=None, autopct='%1.1f%%', startangle=90,
-    pctdistance=0.7, colors=['#36a2eb', '#ff6384'], textprops={'fontsize': 12}
+    sizes, labels=None, autopct='%1.1f%%', startangle=90,
+    pctdistance=1.15, colors=colors, textprops={'fontsize': 12}
 )
 centre_circle = plt.Circle((0, 0), 0.65, fc='white')
 fig1.gca().add_artist(centre_circle)
 ax1.set_title('Mode Distribution', fontsize=14)
 ax1.legend(wedges, labels, title="Mode", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=12)
+for autotext in autotexts:
+    autotext.set_color('black')
+    autotext.set_fontsize(12)
 plt.tight_layout()
 st.pyplot(fig1)
 
-# --- Pie Chart: Time Signature Distribution ---
+# --- Pie Chart: Time Signature Distribution (Donut, metrics outside, legend) ---
 st.subheader("⏱️ Time Signature Distribution")
 ts_counts = df_filtered['time_signature'].value_counts()
+labels = ts_counts.index.astype(str)
+sizes = ts_counts.values
+colors = sns.color_palette('pastel', len(labels))
 fig2, ax2 = plt.subplots(figsize=(5, 5))
 wedges, texts, autotexts = ax2.pie(
-    ts_counts, labels=None, autopct='%1.1f%%', startangle=90,
-    pctdistance=0.7, colors=sns.color_palette('pastel'), textprops={'fontsize': 12}
+    sizes, labels=None, autopct='%1.1f%%', startangle=90,
+    pctdistance=1.15, colors=colors, textprops={'fontsize': 12}
 )
 centre_circle = plt.Circle((0, 0), 0.65, fc='white')
 fig2.gca().add_artist(centre_circle)
 ax2.set_title('Time Signature Distribution', fontsize=14)
-ax2.legend(wedges, ts_counts.index, title="Time Signature", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=12)
+ax2.legend(wedges, labels, title="Time Signature", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=12)
+for autotext in autotexts:
+    autotext.set_color('black')
+    autotext.set_fontsize(12)
 plt.tight_layout()
 st.pyplot(fig2)
 
-# --- Pie Chart: Key Distribution ---
+# --- Pie Chart: Key Distribution (Donut, metrics outside, legend) ---
 st.subheader("🎼 Key Distribution")
 key_counts = df_filtered['key'].value_counts()
+labels = key_counts.index.astype(str)
+sizes = key_counts.values
+colors = sns.color_palette('Set3', len(labels))
 fig3, ax3 = plt.subplots(figsize=(5, 5))
 wedges, texts, autotexts = ax3.pie(
-    key_counts, labels=None, autopct='%1.1f%%', startangle=90,
-    pctdistance=0.7, colors=sns.color_palette('Set3'), textprops={'fontsize': 12}
+    sizes, labels=None, autopct='%1.1f%%', startangle=90,
+    pctdistance=1.15, colors=colors, textprops={'fontsize': 12}
 )
 centre_circle = plt.Circle((0, 0), 0.65, fc='white')
 fig3.gca().add_artist(centre_circle)
 ax3.set_title('Key Distribution', fontsize=14)
-ax3.legend(wedges, key_counts.index, title="Key", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=12)
+ax3.legend(wedges, labels, title="Key", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=12)
+for autotext in autotexts:
+    autotext.set_color('black')
+    autotext.set_fontsize(12)
 plt.tight_layout()
 st.pyplot(fig3)
-
 # --- Bar Chart: Top 10 Artists ---
 st.subheader("🌟 Top 10 Artists by Track Count")
 top_artists = df_filtered['artist'].value_counts().head(10)
