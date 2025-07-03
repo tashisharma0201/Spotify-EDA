@@ -1,11 +1,43 @@
 # Spotify-EDA
 This project performs Exploratory Data Analysis (EDA) on Spotify dataset(s) to gain insights into music trends, genres, and other characteristics. The analysis includes various visualizations and statistical summaries to understand the distribution and relationships between different musical attributes.
+
+# How to Run This Project
+1. Clone the Repository
+git clone https://github.com/yourusername/your-repo-name.git
+cd your-repo-name
+2. Install Dependencies
+Make sure you have Python 3.8+ installed.
+Install required packages with:
+pip install -r requirements.txt
+3. Add the Data File
+Place your data.csv file in the project root directory.
+The file should have columns like: acousticness, danceability, duration_ms, energy, instrumentalness, key, liveness, loudness, mode, speechiness, tempo, time_signature, valence, song_title, artist, etc.
+4. Run the Streamlit App
+streamlit run app.py
+This will open the dashboard in your browser (usually at http://localhost:8501).
+# Project Structure
+.
+├── app.py
+├── data.csv
+├── requirements.txt
+└── README.md
+
+# Requirements
+Python 3.8 or newer
+
+See requirements.txt for all Python dependencies:
+streamlit
+pandas
+matplotlib
+seaborn
+
+# Usage
+Use the sidebar to filter by artist.
+All graphs and metrics are interactive and match the analyses from the notebook.
+Explore feature distributions, top tracks, and correlations in your Spotify dataset.
+
 An interactive dashboard for Spotify dataset exploratory data analysis, built with Streamlit.
-
-
-# Run Locally
-
-
+# Visit:https://spotify-eda-se3ayxdniswhgge4ahedzf.streamlit.app/#energy-vs-danceability
 
 # Features
 Data Cleaning: Initial data cleaning and preprocessing steps.
