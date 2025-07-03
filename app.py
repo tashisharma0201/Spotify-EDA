@@ -24,168 +24,27 @@ def load_data():
 
 df = load_data()
 
-# --- Sidebar filter for artist selection ---
+# --- Sidebar filters for artist and feature selection ---
 st.sidebar.title("🔎 Filter Options")
 artist_options = ['All'] + sorted(df['artist'].unique())
 selected_artist = st.sidebar.selectbox("🎤 Select Artist", artist_options)
 df_filtered = df if selected_artist == 'All' else df[df['artist'] == selected_artist]
 
+feature_options = ['energy', 'valence', 'tempo', 'loudness', 'acousticness', 'danceability', 'instrumentalness', 'liveness', 'speechiness']
+selected_feature = st.sidebar.selectbox("📈 Select Feature for Distribution", feature_options)
+
 st.header("🗂️ Dataset Preview")
-st.dataframe(df_filtered.head(20))
-
-# --- Pie Chart: Top 10 Energy Tracks (Pie Chart) ---
-st.subheader("⚡ Top 10 Energy Tracks (Pie Chart)")
-top_energy = df_filtered.nlargest(10, 'energy')[['song_title', 'energy']]
-top_energy = top_energy[top_energy['energy'] > 0].dropna(subset=['energy'])
-
-labels = top_energy['song_title']
-sizes = top_energy['energy']
-colors = sns.color_palette('cool', len(labels))
-
-if len(sizes) > 0 and sizes.sum() > 0:
-    fig1, ax1 = plt.subplots(figsize=(5, 5))
-    wedges, texts, autotexts = ax1.pie(
-        sizes, labels=None, autopct='%1.1f%%', startangle=90,
-        pctdistance=1.15, colors=colors, textprops={'fontsize': 12}
-    )
-    centre_circle = plt.Circle((0, 0), 0.65, fc='white')
-    fig1.gca().add_artist(centre_circle)
-    ax1.set_title('Top 10 Energy Tracks', fontsize=14)
-    ax1.legend(wedges, labels, title="Song Title", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=10)
-    for autotext in autotexts:
-        autotext.set_color('black')
-        autotext.set_fontsize(10)
-    plt.tight_layout()
-    st.pyplot(fig1)
-else:
-    st.warning("No valid tracks with positive values to display in the pie chart.")
-
-# --- Bar Chart: Top 10 Artists by Track Count ---
-st.subheader("🌟 Top 10 Artists by Track Count")
-top_artists = df_filtered['artist'].value_counts().head(10)
-fig2, ax2 = plt.subplots(figsize=(7, 5))
-sns.barplot(x=top_artists.values, y=top_artists.index, palette='viridis', ax=ax2)
-ax2.set_xlabel('Number of Tracks')
-ax2.set_ylabel('Artist')
-ax2.set_title('Top 10 Artists')
-plt.tight_layout()
-st.pyplot(fig2)
-
-# --- Bar Chart: Top 5 Loudest Tracks ---
-st.subheader("🔊 Top 5 Loudest Tracks")
-top_loudest = df_filtered.nlargest(5, 'loudness')[['song_title', 'loudness']]
-fig3, ax3 = plt.subplots(figsize=(7, 4))
-sns.barplot(x='loudness', y='song_title', data=top_loudest, palette='magma', ax=ax3)
-ax3.set_xlabel('Loudness')
-ax3.set_ylabel('Song Title')
-ax3.set_title('Top 5 Loudest Tracks')
-plt.tight_layout()
-st.pyplot(fig3)
-
-# --- Bar Chart: Top 10 Energetic Tracks ---
-st.subheader("⚡ Top 10 Energetic Tracks")
-top_energetic = df_filtered.nlargest(10, 'energy')[['song_title', 'energy']]
-fig4, ax4 = plt.subplots(figsize=(7, 5))
-sns.barplot(x='energy', y='song_title', data=top_energetic, palette='Blues_r', ax=ax4)
-ax4.set_xlabel('Energy')
-ax4.set_ylabel('Song Title')
-ax4.set_title('Top 10 Energetic Tracks')
-plt.tight_layout()
-st.pyplot(fig4)
-
-# --- Bar Chart: Top 10 Tracks with Most Valence ---
-st.subheader("😊 Top 10 Tracks with Most Valence")
-top_valence = df_filtered.nlargest(10, 'valence')[['song_title', 'valence']]
-fig5, ax5 = plt.subplots(figsize=(7, 5))
-sns.barplot(x='valence', y='song_title', data=top_valence, palette='Reds_r', ax=ax5)
-ax5.set_xlabel('Valence')
-ax5.set_ylabel('Song Title')
-ax5.set_title('Top 10 Tracks with Most Valence')
-plt.tight_layout()
-st.pyplot(fig5)
-
-# --- Bar Chart: Top 10 Tracks by Liveness ---
-st.subheader("🎤 Top 10 Tracks by Liveness")
-top_liveness = df_filtered.nlargest(10, 'liveness')[['song_title', 'liveness']]
-fig6, ax6 = plt.subplots(figsize=(7, 5))
-sns.barplot(x='liveness', y='song_title', data=top_liveness, palette='Purples_r', ax=ax6)
-ax6.set_xlabel('Liveness')
-ax6.set_ylabel('Song Title')
-ax6.set_title('Top 10 Tracks by Liveness')
-plt.tight_layout()
-st.pyplot(fig6)
-
-# --- Bar Chart: Top 10 Tracks by Acousticness ---
-st.subheader("🎸 Top 10 Tracks by Acousticness")
-top_acousticness = df_filtered.nlargest(10, 'acousticness')[['song_title', 'acousticness']]
-fig7, ax7 = plt.subplots(figsize=(7, 5))
-sns.barplot(x='acousticness', y='song_title', data=top_acousticness, palette='Greens_r', ax=ax7)
-ax7.set_xlabel('Acousticness')
-ax7.set_ylabel('Song Title')
-ax7.set_title('Top 10 Tracks by Acousticness')
-plt.tight_layout()
-st.pyplot(fig7)
-
-# --- Bar Chart: Top 10 Tracks by Speechiness ---
-st.subheader("🗣️ Top 10 Tracks by Speechiness")
-top_speechiness = df_filtered.nlargest(10, 'speechiness')[['song_title', 'speechiness']]
-fig8, ax8 = plt.subplots(figsize=(7, 5))
-sns.barplot(x='speechiness', y='song_title', data=top_speechiness, palette='Oranges_r', ax=ax8)
-ax8.set_xlabel('Speechiness')
-ax8.set_ylabel('Song Title')
-ax8.set_title('Top 10 Tracks by Speechiness')
-plt.tight_layout()
-st.pyplot(fig8)
-
-# --- Interactive Feature Distribution ---
-st.subheader("📈 Feature Distribution Explorer")
-feature = st.selectbox(
-    "Select a feature to visualize:",
-    ['energy', 'valence', 'tempo', 'loudness', 'acousticness', 'danceability', 'instrumentalness', 'liveness', 'speechiness']
-)
-fig9, ax9 = plt.subplots(figsize=(7, 4))
-sns.histplot(df_filtered[feature], bins=30, kde=True, color='#36a2eb', ax=ax9)
-ax9.set_title(f'{feature.capitalize()} Distribution')
-plt.tight_layout()
-st.pyplot(fig9)
-
-# --- Feature Distributions (energy, valence, tempo, loudness) ---
-st.subheader("📊 Feature Distributions (Energy, Valence, Tempo, Loudness)")
-fig10, axs10 = plt.subplots(2, 2, figsize=(12, 8))
-sns.histplot(df_filtered['energy'], bins=30, ax=axs10[0, 0], color='blue')
-axs10[0, 0].set_title('Energy')
-sns.histplot(df_filtered['valence'], bins=30, ax=axs10[0, 1], color='red')
-axs10[0, 1].set_title('Valence')
-sns.histplot(df_filtered['tempo'], bins=30, ax=axs10[1, 0], color='green')
-axs10[1, 0].set_title('Tempo')
-sns.histplot(df_filtered['loudness'], bins=30, ax=axs10[1, 1], color='purple')
-axs10[1, 1].set_title('Loudness')
-plt.tight_layout()
-st.pyplot(fig10)
-
-# --- Correlation Heatmap ---
-st.subheader("🧮 Correlation Heatmap (Numeric Features)")
-numeric_cols = df_filtered.select_dtypes(include=['float64', 'int64']).columns
-corr = df_filtered[numeric_cols].corr()
-fig11, ax11 = plt.subplots(figsize=(8, 6))
-sns.heatmap(corr, annot=True, fmt=".2f", cmap="crest", ax=ax11)
-plt.tight_layout()
-st.pyplot(fig11)
-
-# --- Scatter Plot: Energy vs. Danceability ---
-st.subheader("⚡ Energy vs. Danceability")
-fig12, ax12 = plt.subplots(figsize=(7, 5))
-sns.scatterplot(data=df_filtered, x='energy', y='danceability', alpha=0.4, ax=ax12)
-ax12.set_title('Energy vs. Danceability')
-ax12.set_xlabel('Energy')
-ax12.set_ylabel('Danceability')
-plt.tight_layout()
-st.pyplot(fig12)
+st.dataframe(df_filtered.head())
 
 # --- Top 5 Popular Artists ---
 st.subheader("🏆 Top 5 Popular Artists")
 top_five_artists = df_filtered['artist'].value_counts().head(5)
 st.bar_chart(top_five_artists)
+
+# --- Top 5 Loudest Tracks ---
+st.subheader("🔊 Top 5 Loudest Tracks")
+top_loudest_tracks = df_filtered.nlargest(5, 'loudness')[['song_title', 'artist', 'loudness']]
+st.write(top_loudest_tracks)
 
 # --- Artist with Most Danceable Song ---
 st.subheader("💃 Artist with Most Danceable Song")
@@ -197,6 +56,42 @@ if not df_filtered.empty:
 else:
     st.write("No data available.")
 
+# --- Top 10 Instrumental Tracks ---
+st.subheader("🥁 Top 10 Instrumental Tracks")
+top_instrumental_tracks = df_filtered.nlargest(10, 'instrumentalness')[['song_title', 'artist', 'instrumentalness']]
+st.write(top_instrumental_tracks)
+
+# --- Feature Distributions (dropdown selection) ---
+st.subheader(f"📊 Distribution of {selected_feature.capitalize()}")
+fig, ax = plt.subplots(figsize=(7, 4))
+sns.histplot(df_filtered[selected_feature], bins=30, kde=True, color='#36a2eb', ax=ax)
+ax.set_title(f'{selected_feature.capitalize()} Distribution')
+st.pyplot(fig)
+
+# --- Feature Distributions (energy, valence, tempo, loudness) ---
+st.subheader("📊 Feature Distributions (Energy, Valence, Tempo, Loudness)")
+fig2, axs2 = plt.subplots(2, 2, figsize=(12, 8))
+sns.histplot(df_filtered['energy'], bins=30, ax=axs2[0, 0], color='blue')
+axs2[0, 0].set_title('Energy')
+sns.histplot(df_filtered['valence'], bins=30, ax=axs2[0, 1], color='red')
+axs2[0, 1].set_title('Valence')
+sns.histplot(df_filtered['tempo'], bins=30, ax=axs2[1, 0], color='green')
+axs2[1, 0].set_title('Tempo')
+sns.histplot(df_filtered['loudness'], bins=30, ax=axs2[1, 1], color='purple')
+axs2[1, 1].set_title('Loudness')
+plt.tight_layout()
+st.pyplot(fig2)
+
+# --- Top 10 Energetic Tracks ---
+st.subheader("⚡ Top 10 Energetic Tracks")
+top_energetic_tracks = df_filtered.nlargest(10, 'energy')[['song_title', 'artist', 'energy']]
+st.write(top_energetic_tracks)
+
+# --- Top 10 Tracks with Most Valence ---
+st.subheader("😊 Top 10 Tracks with Most Valence")
+top_valence_tracks = df_filtered.nlargest(10, 'valence')[['song_title', 'artist', 'valence']]
+st.write(top_valence_tracks)
+
 # --- Most Common Track Duration ---
 st.subheader("⏳ Most Common Track Duration")
 if not df_filtered.empty:
@@ -207,7 +102,7 @@ if not df_filtered.empty:
 else:
     st.write("No data available.")
 
-# --- Most Trending Artist ---
+# --- Most Trending Artist (Proxy for Genre) ---
 st.subheader("🔥 Most Trending Artist")
 if not df_filtered.empty:
     most_trending_artist = df_filtered['artist'].value_counts().idxmax()
@@ -216,4 +111,52 @@ if not df_filtered.empty:
 else:
     st.write("No data available.")
 
-st.info("✨ Dashboard is visually appealing and all graphs are user-friendly and sized for clarity. Use the sidebar to filter by artist and explore your Spotify dataset in depth!")
+# --- Correlation Heatmap ---
+st.subheader("🧮 Correlation Heatmap (Numeric Features)")
+numeric_cols = df_filtered.select_dtypes(include=['float64', 'int64']).columns
+corr = df_filtered[numeric_cols].corr()
+fig3, ax3 = plt.subplots(figsize=(8, 6))
+sns.heatmap(corr, annot=True, fmt=".2f", cmap="crest", ax=ax3)
+plt.tight_layout()
+st.pyplot(fig3)
+
+# --- Energy vs. Danceability ---
+st.subheader("⚡ Energy vs. Danceability")
+fig4, ax4 = plt.subplots(figsize=(6, 4))
+sns.scatterplot(data=df_filtered, x='energy', y='danceability', alpha=0.4, ax=ax4)
+ax4.set_title('Energy vs. Danceability')
+ax4.set_xlabel('Energy')
+ax4.set_ylabel('Danceability')
+plt.tight_layout()
+st.pyplot(fig4)
+
+# --- Additional Feature Distributions ---
+st.subheader("📊 Additional Feature Distributions")
+fig5, axs5 = plt.subplots(2, 2, figsize=(12, 8))
+sns.histplot(df_filtered['acousticness'], bins=30, ax=axs5[0, 0], color='cyan')
+axs5[0, 0].set_title('Acousticness')
+sns.histplot(df_filtered['instrumentalness'], bins=30, ax=axs5[0, 1], color='magenta')
+axs5[0, 1].set_title('Instrumentalness')
+sns.histplot(df_filtered['liveness'], bins=30, ax=axs5[1, 0], color='yellow')
+axs5[1, 0].set_title('Liveness')
+sns.histplot(df_filtered['speechiness'], bins=30, ax=axs5[1, 1], color='orange')
+axs5[1, 1].set_title('Speechiness')
+plt.tight_layout()
+st.pyplot(fig5)
+
+# --- Top 10 Tracks by Liveness ---
+st.subheader("🎤 Top 10 Tracks by Liveness")
+top_liveness_tracks = df_filtered.nlargest(10, 'liveness')[['song_title', 'artist', 'liveness']]
+st.write(top_liveness_tracks)
+
+# --- Top 10 Tracks by Acousticness ---
+st.subheader("🎸 Top 10 Tracks by Acousticness")
+top_acousticness_tracks = df_filtered.nlargest(10, 'acousticness')[['song_title', 'artist', 'acousticness']]
+st.write(top_acousticness_tracks)
+
+# --- Top 10 Tracks by Speechiness ---
+st.subheader("🗣️ Top 10 Tracks by Speechiness")
+top_speechiness_tracks = df_filtered.nlargest(10, 'speechiness')[['song_title', 'artist', 'speechiness']]
+st.write(top_speechiness_tracks)
+
+st.info("✨ This interactive dashboard covers all major Spotify EDA insights. Use the sidebar to filter by artist and feature, and explore your data visually and intuitively!")
