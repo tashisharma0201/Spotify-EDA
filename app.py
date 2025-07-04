@@ -238,10 +238,11 @@ st.markdown("""
     </a>
     &nbsp;|&nbsp;
     <a href="https://github.com/tashisharma0201" target="_blank" style="text-decoration:none;">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original-white.svg" width="24" style="vertical-align:middle; margin-right:5px;">GitHub
+        <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark-Light.png" width="24" style="vertical-align:middle; margin-right:5px;">GitHub
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
