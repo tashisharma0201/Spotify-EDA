@@ -4,19 +4,20 @@ The dashboard is built with Streamlit and is fully interactive and user-friendly
 
 # How to Run This Project
 1.Clone the repository:
-bash
+
 git clone https://github.com/tashisharma10/Spotify-EDA.git
+
 cd your-repo-name
 
 2.Install dependencies:
-bash
+
 pip install -r requirements.txt
 
 Place your data file:
 Ensure data.csv is present in the project root.
 
 3.Run the dashboard:
-bash
+
 streamlit run app.py
 The app will open in your browser at http://localhost:8501.
 
