@@ -226,6 +226,21 @@ st.markdown("""
         border-left: 0.3em solid #90caf9;
     }
 }
+
 </style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+---
+<div style="text-align: center; margin-top: 2em;">
+    <strong>Project by <span style="color:#2196f3;">Tashi Sharma</span></strong><br>
+    <a href="https://www.linkedin.com/in/tashi-sharma-97695b277/" target="_blank" style="text-decoration:none;">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" width="24" style="vertical-align:middle; margin-right:5px;">LinkedIn
+    </a>
+    &nbsp;|&nbsp;
+    <a href="https://github.com/tashisharma0201" target="_blank" style="text-decoration:none;">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="24" style="vertical-align:middle; margin-right:5px;">GitHub
+    </a>
+</div>
 """, unsafe_allow_html=True)
 
