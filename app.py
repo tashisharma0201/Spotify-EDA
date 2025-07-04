@@ -229,7 +229,16 @@ st.markdown("""
 
 </style>
 """, unsafe_allow_html=True)
-st.markdown("""
+# Detect theme
+theme_type = st.context.theme.type if hasattr(st.context, "theme") else "light"
+
+# Choose icon based on theme
+if theme_type == "dark":
+    github_icon = "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/github.svg?sanitize=true&color=fff"
+else:
+    github_icon = "https://unpkg.com/simple-icons@v9/icons/github.svg"
+
+st.markdown(f"""
 ---
 <div style="text-align: center; margin-top: 2em;">
     <strong>Project by <span style="color:#2196f3;">Tashi Sharma</span></strong><br>
@@ -238,10 +247,11 @@ st.markdown("""
     </a>
     &nbsp;|&nbsp;
     <a href="https://github.com/tashisharma0201" target="_blank" style="text-decoration:none;">
-        <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark-Light.png" width="24" style="vertical-align:middle; margin-right:5px;">GitHub
+        <img src="{github_icon}" width="24" style="vertical-align:middle; margin-right:5px;">GitHub
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
