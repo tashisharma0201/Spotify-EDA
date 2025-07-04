@@ -5,14 +5,14 @@ The dashboard is built with Streamlit and is fully interactive and user-friendly
 # How to Run This Project
 1.Clone the repository:
 bash
-git clone https://github.com/yourusername/your-repo-name.git
+git clone https://github.com/tashisharma10/Spotify-EDA.git
 cd your-repo-name
 
 2.Install dependencies:
 bash
 pip install -r requirements.txt
-Place your data file:
 
+Place your data file:
 Ensure data.csv is present in the project root.
 
 3.Run the dashboard:
@@ -21,7 +21,7 @@ streamlit run app.py
 The app will open in your browser at http://localhost:8501.
 
 An interactive dashboard for Spotify dataset exploratory data analysis, built with Streamlit.
-# Visit:https://spotify-eda-se3ayxdniswhgge4ahedzf.streamlit.app/#energy-vs-danceability
+# Visit:https://spotify-eda-fyyx6kilgsbprukuhileym.streamlit.app/
 
 # Dataset
 Source: Kaggle
